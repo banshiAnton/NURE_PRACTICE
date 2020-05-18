@@ -38,6 +38,10 @@
             return $this->$role === UserRoles::ADMIN;
         }
 
+        public function isAbleToCreateVoute() {
+            return $this->isAdmin() || $this->isSecretary();
+        }
+
         public function isSecretary() {
             return $this->$role === UserRoles::SECRETARY;
         }
