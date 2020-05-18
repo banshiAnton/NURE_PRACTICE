@@ -52,7 +52,6 @@
 
         public static function createUserFromSQLRow($sqlRow) {
             $user = new User();
-            var_dump($sqlRow);
             $user->$id = (int)$sqlRow[UserTableFields::ID];
             $user->$login = $sqlRow[UserTableFields::LOGIN];
             $user->$full_name = $sqlRow[UserTableFields::FULL_NAME];
