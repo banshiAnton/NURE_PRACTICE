@@ -27,10 +27,10 @@
         public static function createVoteFromSQLRow($sqlRow) {
             $vote = new Vote();
 
-            $vote->$user_id = (int)$sqlRow[VoteTableFields::USER_ID];
-            $vote->$choice = (int)$sqlRow[VoteTableFields::CHOICE];
-            $vote->$date = $sqlRow[VoteTableFields::DATE];
-            $vote->$voting_id = (int)$sqlRow[VoteTableFields::VOTING_ID];
+            $vote->user_id = (int)$sqlRow[VoteTableFields::USER_ID];
+            $vote->choice = (int)$sqlRow[VoteTableFields::CHOICE];
+            $vote->date = $sqlRow[VoteTableFields::DATE];
+            $vote->voting_id = (int)$sqlRow[VoteTableFields::VOTING_ID];
 
             return $vote;
         }
