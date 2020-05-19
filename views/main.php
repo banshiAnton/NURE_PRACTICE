@@ -11,8 +11,6 @@
 </head>
 <body>
     Main
-    <?php
-        var_dump($_SESSION[SESSION_USER_ID_KEY], $_SESSION[SESSION_USER_ROLE_KEY]);
-    ?>
+    
 </body>
 </html>

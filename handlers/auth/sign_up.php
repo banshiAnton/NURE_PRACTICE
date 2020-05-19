@@ -11,8 +11,8 @@
         ':password' => $_POST['password']
     );
 
-    $user_id = (int)User::registerUser($db_connection, $newUser);
-    $user = User::getUserById($db_connection, $user_id);
+    $user_id = (int)User::register($db_connection, $newUser);
+    $user = User::getById($db_connection, $user_id);
 
     $email = $_POST['email'];
 

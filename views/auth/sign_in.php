@@ -14,6 +14,6 @@
         <input type="password" name="password" placeholder="Пароль" require><br>
         <input type="submit" value="Вход">
     </form>
-    <a href="/nure_practice/views/sign_up.php">Регистрация</a>
+    <a href="/nure_practice/views/auth/sign_up.php">Регистрация</a>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?php
-
+    require_once __DIR__.'/../utils/sql_executor.php';
     class VotingResult {
         const YES = 1;
         const NO = 2;
@@ -30,7 +30,23 @@
             $this->opned === 1;
         }
 
-        public static function createVotingFromSQLRow($sqlRow) {
+        public static function getById($db_connection, $id) {
+            $sql = 'SELECT * FROM votings WHERE id = :id';
+            $params = array(':id' => $id);
+            $votings = SQLExecutor::execute($db_connection,  $sql, $params);
+            if (count($votings) < 1) {
+                return false;
+            }
+            return self::createFromSQLRow($votings[0]);
+        }
+
+        public static function register($db_connection, $fields) {
+            $sql = 'INSERT INTO votings(subject, description) VALUES (:subject, :description)';
+            $voting_id = SQLExecutor::insert($db_connection, $sql, $fields);
+            return $voting_id;
+        }
+
+        public static function createFromSQLRow($sqlRow) {
             $voting = new Voting();
 
             $voting->id = (int)$sqlRow[VotingTableFields::ID];

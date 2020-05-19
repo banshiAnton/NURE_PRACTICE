@@ -1,5 +1,5 @@
 <?php
-
+    require_once __DIR__.'/../utils/sql_executor.php';
     class VoteChoice {
         const YES = 1;
         const NO = 2;

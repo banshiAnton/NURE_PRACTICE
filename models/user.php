@@ -65,14 +65,14 @@
             $this->addEmails(array($email));
         }
 
-        public static function getUserById($db_connection, $id) {
+        public static function getById($db_connection, $id) {
             $sql = 'SELECT * FROM users WHERE id = :id';
             $params = array(':id' => $id);
             $users = SQLExecutor::execute($db_connection,  $sql, $params);
             if (count($users) < 1) {
                 return false;
             }
-            return self::createUserFromSQLRow($users[0]);
+            return self::createFromSQLRow($users[0]);
         }
 
         public static function authUserByLogin($db_connection, $login, $password) {
@@ -82,16 +82,16 @@
             if (count($users) < 1) {
                 return false;
             }
-            return self::createUserFromSQLRow($users[0]);
+            return self::createFromSQLRow($users[0]);
         }
 
-        public static function registerUser($db_connection, $userFields) {
+        public static function register($db_connection, $fields) {
             $sql = 'INSERT INTO users(full_name, role, login, password) VALUES (:full_name, :role, :login, :password)';
-            $user_id = SQLExecutor::insert($db_connection, $sql, $userFields);
+            $user_id = SQLExecutor::insert($db_connection, $sql, $fields);
             return $user_id;
         }
 
-        public static function createUserFromSQLRow($sqlRow) {
+        public static function createFromSQLRow($sqlRow) {
             $user = new User();
             $user->id = (int)$sqlRow[UserTableFields::ID];
             $user->login = $sqlRow[UserTableFields::LOGIN];

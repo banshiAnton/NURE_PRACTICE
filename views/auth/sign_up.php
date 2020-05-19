@@ -1,6 +1,6 @@
 <?php
-    require_once __DIR__.'/../config/constants.php';
-    require_once __DIR__.'/../models/user.php';
+    require_once __DIR__.'/../../config/constants.php';
+    require_once __DIR__.'/../../models/user.php';
     session_start();  
 ?>
 <!DOCTYPE html>
@@ -30,6 +30,6 @@
         ?>
         <input type="submit" value="Зарегистрироваться">
     </form>
-    <a href="/nure_practice/views/sign_in.php">Уже есть аккаунт</a>
+    <a href="/nure_practice/views/auth/sign_in.php">Уже есть аккаунт</a>
 </body>
 </html>
