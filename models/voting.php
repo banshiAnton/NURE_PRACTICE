@@ -27,17 +27,17 @@
         }
 
         public function isOpned() {
-            $this->$opned === 1;
+            $this->opned === 1;
         }
 
         public static function createVotingFromSQLRow($sqlRow) {
             $voting = new Voting();
 
-            $voting->$id = (int)$sqlRow[VotingTableFields::ID];
-            $voting->$subject = $sqlRow[VotingTableFields::SUBJECT];
-            $voting->$description = $sqlRow[VotingTableFields::DESCRIPTION];
-            $voting->$created_date = $sqlRow[VotingTableFields::CREATED_DATE];
-            $voting->$id = (int)$sqlRow[VotingTableFields::OPNED];
+            $voting->id = (int)$sqlRow[VotingTableFields::ID];
+            $voting->subject = $sqlRow[VotingTableFields::SUBJECT];
+            $voting->description = $sqlRow[VotingTableFields::DESCRIPTION];
+            $voting->created_date = $sqlRow[VotingTableFields::CREATED_DATE];
+            $voting->id = (int)$sqlRow[VotingTableFields::OPNED];
 
             return $voting;
         }
