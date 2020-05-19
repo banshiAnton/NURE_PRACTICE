@@ -10,8 +10,8 @@
 </head>
 <body>
     <form action="/nure_practice/handlers/auth/sign_in.php" method="post">
-        <input type="text" name="login" placeholder="login" require><br>
-        <input type="password" name="password" placeholder="password" require><br>
+        <input type="text" name="login" placeholder="Логин" require><br>
+        <input type="password" name="password" placeholder="Пароль" require><br>
         <input type="submit" value="Вход">
     </form>
     <a href="/nure_practice/views/sign_up.php">Регистрация</a>

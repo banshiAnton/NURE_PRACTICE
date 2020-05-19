@@ -58,6 +58,13 @@
             $this->addEmails($user_emails);
         }
 
+        public function insertEmail($db_connection, $email) {
+            $sql = 'INSERT INTO emails(email, user_id) VALUES (:email, :user_id)';
+            $params = array(':email' => $email, ':user_id' => $this->id);
+            SQLExecutor::insert($db_connection, $sql, $params);
+            $this->addEmails(array($email));
+        }
+
         public static function getUserById($db_connection, $id) {
             $sql = 'SELECT * FROM users WHERE id = :id';
             $params = array(':id' => $id);
@@ -76,6 +83,12 @@
                 return false;
             }
             return self::createUserFromSQLRow($users[0]);
+        }
+
+        public static function registerUser($db_connection, $userFields) {
+            $sql = 'INSERT INTO users(full_name, role, login, password) VALUES (:full_name, :role, :login, :password)';
+            $user_id = SQLExecutor::insert($db_connection, $sql, $userFields);
+            return $user_id;
         }
 
         public static function createUserFromSQLRow($sqlRow) {
