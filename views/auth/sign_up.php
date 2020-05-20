@@ -1,7 +1,6 @@
 <?php
-    require_once __DIR__.'/../../config/constants.php';
-    require_once __DIR__.'/../../models/user.php';
-    session_start();  
+    require_once __DIR__.'/../../utils/session_user_load.php';
+    guard(false, false, false, false);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,15 +16,17 @@
         <input type="email" name="email" placeholder="Почта" require><br>
         <input type="password" name="password" placeholder="Пароль" require><br>
         <?php
-            if ((int)$_SESSION[SESSION_USER_ROLE_KEY] === UserRoles::ADMIN) {
-                $adminRoleValue = UserRoles::ADMIN;
-                $secreteryRoleValue = UserRoles::SECRETARY;
-                $userRoleValue = UserRoles::USER;
-                echo '<select name="role">';
-                    echo "<option value=$adminRoleValue>Admin</option>";
-                    echo "<option value=$secreteryRoleValue>Secretery</option>";
-                    echo "<option selected value=$userRoleValue>User</option>";
-                echo '</select><br>';
+            if ($session_user) {
+                if ($session_user->isAdmin()) {
+                    $adminRoleValue = UserRoles::ADMIN;
+                    $secreteryRoleValue = UserRoles::SECRETARY;
+                    $userRoleValue = UserRoles::USER;
+                    echo '<select name="role">';
+                        echo "<option value=$adminRoleValue>Admin</option>";
+                        echo "<option value=$secreteryRoleValue>Secretery</option>";
+                        echo "<option selected value=$userRoleValue>User</option>";
+                    echo '</select><br>';
+                }
             }
         ?>
         <input type="submit" value="Зарегистрироваться">

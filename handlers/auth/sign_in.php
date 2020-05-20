@@ -1,13 +1,6 @@
 <?php
-    require_once __DIR__.'/../../config/constants.php';
-    require_once __DIR__.'/../../models/user.php';
-
-    $db_connection = include(__DIR__.'/../../utils/connection.php');
-
-    session_start();
-
-    unset($_SESSION[SESSION_USER_ID_KEY]);
-    unset($_SESSION[SESSION_USER_ROLE_KEY]);
+    require_once __DIR__.'/../../utils/session_user_load.php';
+    guard(false, false, false, false);
 
     $login = $_POST['login'];
     $password = $_POST['password'];

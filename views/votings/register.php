@@ -1,5 +1,6 @@
 <?php
-    session_start();  
+    require_once __DIR__.'/../../utils/session_user_load.php';
+    guard(true, true, false);
 ?>
 <!DOCTYPE html>
 <html lang="en">

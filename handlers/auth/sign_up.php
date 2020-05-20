@@ -1,8 +1,6 @@
 <?php
-    require_once __DIR__.'/../../models/user.php';
-    session_start();
-
-    $db_connection = include(__DIR__.'/../../utils/connection.php');
+    require_once __DIR__.'/../../utils/session_user_load.php';
+    guard(false, false, false, false);
 
     $newUser = array(
         ':login' => $_POST['login'],
@@ -19,6 +17,4 @@
     if (!empty($email)) {
         $user->insertEmail($db_connection, $email);
     }
-
-    var_dump($user)
 ?>

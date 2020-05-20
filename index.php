@@ -4,6 +4,6 @@
     if (empty($_SESSION[SESSION_USER_ID_KEY])) {
         header("Location: views/auth/sign_in.php");
     } else {
-        header("Location: views/auth/main.php");
+        header("Location: views/main.php");
     }
 ?>

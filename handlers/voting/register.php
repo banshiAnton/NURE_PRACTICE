@@ -1,8 +1,7 @@
 <?php
+    require_once __DIR__.'/../../utils/session_user_load.php';
+    guard(true, true, false);
     require_once __DIR__.'/../../models/voting.php';
-    session_start();
-
-    $db_connection = include(__DIR__.'/../../utils/connection.php');
 
     $newVoting = array(
         ':subject' => $_POST['subject'],
