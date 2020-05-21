@@ -16,14 +16,17 @@
 
     class Voting {
 
+        const PAGE_LIMIT = 20;
+
         public $id;
         public $subject;
         public $description;
         public $created_date;
         public $opned;
+        public $isVoted;
 
         public function __construct() {
-
+            $this->isVoted = false;
         }
 
         public function isOpned() {
@@ -46,6 +49,27 @@
             return $voting_id;
         }
 
+        public static function loadVotings($db_connection, $page = 1) {
+            $limit = self::PAGE_LIMIT;
+            $offset = ($page - 1) * $limit;
+            $sql = 'SELECT * FROM votings LIMIT :limit OFFSET :offset';
+            $params = array(
+            ':limit' => array('dataType' => PDO::PARAM_INT, 'value' => $limit),
+            ':offset' => array('dataType' => PDO::PARAM_INT, 'value' => $offset)
+            );
+            $votings = SQLExecutor::execute($db_connection,  $sql, $params);
+            return array_map(function ($votingRow) {
+                return self::createFromSQLRow($votingRow);
+            }, $votings);
+        }
+
+        public static function countAll($db_connection) {
+            $sql = 'SELECT COUNT(*) as votings_count FROM votings';
+            $params = array();
+            $result = SQLExecutor::execute($db_connection,  $sql, $params);
+            return $result['votings_count'];
+        }
+
         public static function createFromSQLRow($sqlRow) {
             $voting = new Voting();
 
@@ -53,7 +77,7 @@
             $voting->subject = $sqlRow[VotingTableFields::SUBJECT];
             $voting->description = $sqlRow[VotingTableFields::DESCRIPTION];
             $voting->created_date = $sqlRow[VotingTableFields::CREATED_DATE];
-            $voting->id = (int)$sqlRow[VotingTableFields::OPNED];
+            $voting->opned = (int)$sqlRow[VotingTableFields::OPNED];
 
             return $voting;
         }
