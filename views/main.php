@@ -13,6 +13,7 @@
     <?php
         var_dump($session_user)
     ?>
+    <br><a href="/nure_practice/views/votings/list.php">Отпросы</a>
     <br><a href="/nure_practice/views/auth/logout.php">Выход</a>
 </body>
 </html>
