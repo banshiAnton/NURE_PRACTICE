@@ -1,11 +1,5 @@
 <?php
     require_once __DIR__.'/../utils/sql_executor.php';
-    class VotingResult {
-        const YES = 1;
-        const NO = 2;
-        const DRAW = 3;
-    }
-
     class VotingTableFields {
         const ID = "id";
         const SUBJECT = "subject";
@@ -54,8 +48,8 @@
             $offset = ($page - 1) * $limit;
             $sql = 'SELECT * FROM votings LIMIT :limit OFFSET :offset';
             $params = array(
-            ':limit' => array('dataType' => PDO::PARAM_INT, 'value' => $limit),
-            ':offset' => array('dataType' => PDO::PARAM_INT, 'value' => $offset)
+                ':limit' => array('dataType' => PDO::PARAM_INT, 'value' => $limit),
+                ':offset' => array('dataType' => PDO::PARAM_INT, 'value' => $offset)
             );
             $votings = SQLExecutor::execute($db_connection,  $sql, $params);
             return array_map(function ($votingRow) {

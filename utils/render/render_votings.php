@@ -12,16 +12,15 @@
                 echo "<b>{$state}</b><br>";
                 echo "<p>{$voting->description}</p><br>";
                 echo '<lable>';
-                    echo '<input type="radio" name="vote_result" value='.strval(VotingResult::YES).'>';
+                    echo '<input type="radio" name="vote_result" value='.strval(VoteChoice::YES).'>';
                 echo 'За</lable>';
                 echo '<lable>';
-                    echo '<input type="radio" name="vote_result" value='.strval(VotingResult::NO).'>';
+                    echo '<input type="radio" name="vote_result" value='.strval(VoteChoice::NO).'>';
                 echo 'Против</lable>';
                 echo '<lable>';
-                    echo '<input type="radio" name="vote_result" value='.strval(VotingResult::DRAW).'>';
+                    echo '<input type="radio" name="vote_result" value='.strval(VoteChoice::PASS).'>';
                 echo 'Воздержаться</lable><br>';
                 echo '<input type="hidden" name="voting_id" value="'.strval($voting->id).'">';
-                echo '<input type="hidden" name="user_id" value="'.strval($session_user->id).'">';
                 echo '<input type="submit" value="Проголосовать"></input>';
             echo '</form><br><br>';
         }
