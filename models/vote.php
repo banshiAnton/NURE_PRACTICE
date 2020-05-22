@@ -24,6 +24,16 @@
 
         }
 
+        public static function makeVoteByUserId($db_connection, $vote_id, $user_id, $vote_result) {
+            $sql = 'INSERT INTO votes(voting_id, choice, user_id) VALUES (:vote_id, :vote_result, :user_id)';
+            $params = array(
+                ':vote_id' => array('dataType' => PDO::PARAM_INT, 'value' => $vote_id),
+                ':vote_result' => array('dataType' => PDO::PARAM_INT, 'value' => $vote_result),
+                ':user_id' => array('dataType' => PDO::PARAM_INT, 'value' => $user_id)
+            );
+            return SQLExecutor::insert($db_connection,  $sql, $params);
+        }
+
         public static function createVoteFromSQLRow($sqlRow) {
             $vote = new Vote();
 
