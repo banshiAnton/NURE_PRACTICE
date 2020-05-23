@@ -34,7 +34,7 @@
             return SQLExecutor::insert($db_connection,  $sql, $params);
         }
 
-        public static function createVoteFromSQLRow($sqlRow) {
+        public static function createFromSQLRow($sqlRow) {
             $vote = new Vote();
 
             $vote->user_id = (int)$sqlRow[VoteTableFields::USER_ID];
