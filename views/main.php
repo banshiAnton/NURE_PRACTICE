@@ -14,6 +14,11 @@
         var_dump($session_user)
     ?>
     <br><a href="/nure_practice/views/votings/list.php">Опросы</a>
+    <?php
+        if ($session_user->isAbleToAdminVotings()) {
+            echo '<br><a href="/nure_practice/views/votings/register.php">Управление опросам</a>';
+        }
+    ?>
     <br><a href="/nure_practice/views/auth/logout.php">Выход</a>
 </body>
 </html>
