@@ -1,6 +1,6 @@
 <?php
     require_once __DIR__.'/../../utils/session_user_load.php';
-    guard(true, true, true);
+    guard(false, true, true);
 ?>
 <!DOCTYPE html>
 <html lang="en">
