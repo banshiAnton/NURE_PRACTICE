@@ -19,13 +19,12 @@
         public $description;
         public $created_date;
         public $opned;
-        public $isVoted;
         public $vote;
         public $votes;
         public $hasVotes;
 
         public function __construct() {
-            $this->isVoted = false;
+            $this->hasVotes = false;
             $this->votes = array(
                 VoteChoice::YES => 0,
                 VoteChoice::NO => 0,
@@ -53,39 +52,54 @@
             return $voting_id;
         }
 
-        public static function loadVotingsToVote($db_connection, $user_id, $page = 1) {
+        public static function loadVotings($db_connection, $user_id, $page = 1) {
             $limit = self::PAGE_LIMIT;
             $offset = ($page - 1) * $limit;
-            $sql = 'SELECT * FROM votings LEFT JOIN votes ON votes.voting_id = votings.id WHERE votes.user_id = :user_id OR votes.user_id IS NULL ORDER BY votings.created_date DESC LIMIT :limit OFFSET :offset';
             $params = array(
                 ':limit' => array('dataType' => PDO::PARAM_INT, 'value' => $limit),
                 ':offset' => array('dataType' => PDO::PARAM_INT, 'value' => $offset),
-                ':user_id' => array('dataType' => PDO::PARAM_INT, 'value' => $user_id)
             );
+            if (empty($user_id)) {
+                $sql = 'SELECT * FROM votings ORDER BY votings.created_date DESC LIMIT :limit OFFSET :offset';
+            } else {
+                $sql = 'SELECT * FROM votings LEFT JOIN votes ON votes.voting_id = votings.id WHERE votes.user_id = :user_id OR votes.user_id IS NULL ORDER BY votings.created_date DESC LIMIT :limit OFFSET :offset';
+                $params[':user_id'] = array('dataType' => PDO::PARAM_INT, 'value' => $user_id);
+            }
             $votingRows = SQLExecutor::execute($db_connection,  $sql, $params);
-            return array_map(function ($votingRow) {
+            $votings = array_map(function ($votingRow) {
                 $voting =  self::createFromSQLRow($votingRow);
                 if (!empty($votingRow[VoteTableFields::VOTING_ID])) {
                     $voting->vote = Vote::createFromSQLRow($votingRow);
                 }
                 return $voting;
             }, $votingRows);
+
+            $voting_ids = array_map(function($voting){return $voting->id;}, $votings);
+            $votings_with_votes = self::loadVotingsWithVotes($db_connection, $voting_ids);
+            foreach($votings as $voting) {
+                $voting->votes = $votings_with_votes[$voting->id]->votes;
+                $voting->hasVotes = $votings_with_votes[$voting->id]->hasVotes;
+            }
+            return $votings;
         }
 
-        public static function loadVotingsToEdit($db_connection, $page = 1) {
-            $limit = self::PAGE_LIMIT;
-            $offset = ($page - 1) * $limit;
-            $sql = 'SELECT votings.*, votes.*, COUNT(votes.voting_id) as votes_count FROM votings LEFT JOIN votes ON votes.voting_id = votings.id GROUP BY votings.id, votes.choice ORDER BY votings.created_date DESC LIMIT :limit OFFSET :offset';
-            $params = array(
-                ':limit' => array('dataType' => PDO::PARAM_INT, 'value' => $limit),
-                ':offset' => array('dataType' => PDO::PARAM_INT, 'value' => $offset),
-            );
+        public static function loadVotingsWithVotes($db_connection, $votings_ids) {
+            $params = array();
+            $in_concat = "";
+            foreach ($votings_ids as $i => $value)
+            {
+                $param_name = ":votings_id".$i;
+                $in_concat .= "$param_name,";
+                $params[$param_name] = array('dataType' => PDO::PARAM_INT, 'value' => $value);
+            }
+            $in_concat = rtrim($in_concat, ",");
+            $sql = "SELECT votings.*, votes.*, COUNT(votes.voting_id) as votes_count FROM votings LEFT JOIN votes ON votes.voting_id = votings.id WHERE votings.id IN ($in_concat) GROUP BY votings.id, votes.choice ORDER BY votings.created_date DESC";
             $votingRowsJoined = SQLExecutor::execute($db_connection,  $sql, $params);
             return self::proccessOnJoinVotinsAndVotes($votingRowsJoined);
         }
 
         public static function proccessOnJoinVotinsAndVotes($votingRowsJoined) {
-            $votings_reduce_result = array_reduce($votingRowsJoined, function ($votingsStore, $votingRow) {
+            return array_reduce($votingRowsJoined, function ($votingsStore, $votingRow) {
                 $voting =  self::createFromSQLRow($votingRow);
                 $voteType = $votingRow[VoteTableFields::CHOICE];
                 $voteCount = (int)$votingRow['votes_count'];
@@ -100,7 +114,6 @@
                 }
                 return $votingsStore;
             }, array());
-            return array_values($votings_reduce_result);
         }
 
         public static function countAll($db_connection) {
