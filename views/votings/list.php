@@ -15,7 +15,7 @@
         require_once __DIR__.'/../../utils/render/render_votings.php';
 
         $page = $_GET['page'] ?? 1;
-        $votings = Voting::loadVotings($db_connection, $session_user->id, $page);
+        $votings = Voting::loadVotingsToVote($db_connection, $session_user->id, $page);
         render_votings($votings);
     ?>
 </body>
