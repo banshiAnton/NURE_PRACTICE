@@ -9,5 +9,5 @@
 
     $row_id = Vote::makeVoteByUserId($db_connection, $vote_id, $session_user->id, $vote_result);
 
-    var_dump($row_id);
+    header('Location: ../../views/votings/list.php');
 ?>
