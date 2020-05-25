@@ -17,4 +17,6 @@
     if (!empty($email)) {
         $user->insertEmail($db_connection, $email);
     }
+
+    header('Location: ../../index.php');
 ?>
