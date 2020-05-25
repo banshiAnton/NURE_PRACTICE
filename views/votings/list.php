@@ -16,7 +16,7 @@
 
         $page = $_GET['page'] ?? 1;
         $votings = Voting::loadVotings($db_connection, $session_user->id, $page);
-        render_votings($votings);
+        render_votings($votings, false);
     ?>
 </body>
 </html>

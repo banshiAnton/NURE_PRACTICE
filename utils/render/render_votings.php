@@ -1,24 +1,36 @@
 <?php
     require_once __DIR__.'/../../models/voting.php';
     require_once __DIR__.'/../../models/vote.php';
-    function render_votings($votings) {
+    function render_votings($votings, $forEdit) {
         global $session_user;
         foreach($votings as $voting) {
             $isAbleToVote = $voting->isOpned() && empty($voting->vote);
             $state = $voting->isOpned() ? 'Открыто' : 'Закрыто';
-            if (!$isAbleToVote) {
+            $votesYes = $voting->votes[VoteChoice::YES];
+            $votesNo = $voting->votes[VoteChoice::NO];
+            $votesPass = $voting->votes[VoteChoice::PASS];
+            if ($forEdit || !$isAbleToVote) {
                 echo '<div>';
                     echo "Тема: <b>{$voting->subject}</b><br>";
                     echo "Дата: <b>{$voting->created_date}</b><br>";
                     echo "Статус: <b>{$state}</b><br>";
                     echo "Описание: <p>{$voting->description}</p>";
-                    if(!empty($voting->vote)) {
-                        $youeChoice = $voting->vote->choice;
-                        $youeChoiceText = $youeChoice == VoteChoice::YES ? 'За' : $youeChoice == VoteChoice::NO ? 'Против' : 'Воздержаться';
-                        echo "Ваш выбор: <b>{$youeChoiceText}</b><br>";
-                        echo "Дата выбора: <b>{$voting->vote->date}</b><br>";
+                    if (!$voting->hasVotes) {
+                        echo 'Еще нет голосов<br>';
                     } else {
-                        echo "Ваш выбор: <b>[Отсутствует]</b><br>";
+                        echo "За: {$votesYes}<br>";
+                        echo "Против: {$votesNo}<br>";
+                        echo "Воздержался: {$votesPass}<br>";
+                    }
+                    if (!$forEdit) {
+                        if(!empty($voting->vote)) {
+                            $youeChoice = $voting->vote->choice;
+                            $youeChoiceText = $youeChoice == VoteChoice::YES ? 'За' : $youeChoice == VoteChoice::NO ? 'Против' : 'Воздержаться';
+                            echo "Ваш выбор: <b>{$youeChoiceText}</b><br>";
+                            echo "Дата выбора: <b>{$voting->vote->date}</b><br>";
+                        } else {
+                            echo "Ваш выбор: <b>[Отсутствует]</b><br>";
+                        }
                     }
                 echo '</div><br><br><br>';
             } else {
@@ -27,6 +39,13 @@
                     echo "Дата: <b>{$voting->created_date}</b><br>";
                     echo "Статус: <b>{$state}</b><br>";
                     echo "Описание: <p>{$voting->description}</p>";
+                    if (!$voting->hasVotes) {
+                        echo 'Еще нет голосов<br>';
+                    } else {
+                        echo "За: {$votesYes}<br>";
+                        echo "Против: {$votesNo}<br>";
+                        echo "Воздержался: {$votesPass}<br>";
+                    }
                     echo '<lable>';
                         echo '<input type="radio" name="vote_result" value='.strval(VoteChoice::YES).'>';
                     echo 'За</lable>';

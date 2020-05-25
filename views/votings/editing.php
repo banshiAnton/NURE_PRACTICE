@@ -13,11 +13,11 @@
     <a href="/nure_practice/views/votings/register.php">Создать новый опрос</a><br><br><br>
     <?php
         require_once __DIR__.'/../../models/voting.php';
-        require_once __DIR__.'/../../utils/render/render_votings_to_edit.php';
+        require_once __DIR__.'/../../utils/render/render_votings.php';
 
         $page = $_GET['page'] ?? 1;
         $votings = Voting::loadVotings($db_connection, null, $page);
-        render_votings_to_edit($votings);
+        render_votings($votings, true);
     ?>
 </body>
 </html>
