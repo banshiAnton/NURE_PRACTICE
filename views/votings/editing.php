@@ -8,6 +8,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Управление запросами</title>
+    <style>
+        a { 
+            text-decoration: none;
+            color: black;
+        } 
+    </style>
 </head>
 <body>
     <a href="/nure_practice/views/votings/register.php">Создать новый опрос</a><br><br><br>

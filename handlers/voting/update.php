@@ -3,11 +3,13 @@
     guard(true, true, false);
     require_once __DIR__.'/../../models/voting.php';
 
-    $newVoting = array(
+    $voting_id = (int)$_POST['voting_id'];
+
+    $update_value = array(
         ':subject' => $_POST['subject'],
         ':description' => $_POST['description'] ?? '',
+        ':opned' => (int) $_POST['opned']
     );
 
-    $voting_id = (int)Voting::register($db_connection, $newVoting);
-    $voting = Voting::getById($db_connection, $voting_id);
+    Voting::updateVotingById($db_connection, $voting_id, $update_value)
 ?>

@@ -129,7 +129,12 @@
             $sql = 'SELECT COUNT(*) as votings_count FROM votings';
             $params = array();
             $result = SQLExecutor::execute($db_connection,  $sql, $params);
-            return $result['votings_count'];
+            return (int)$result['votings_count'];
+        }
+
+        public static function updateVotingById($db_connection, $voting_id, $params) {
+            $sql = 'UPDATE votings SET subject = :subject, description = :description, opned = :opned';
+            return SQLExecutor::insert($db_connection,  $sql, $params);
         }
 
         public static function createFromSQLRow($sqlRow) {

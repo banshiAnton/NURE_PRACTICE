@@ -4,12 +4,16 @@
     function render_votings($votings, $forEdit) {
         global $session_user;
         foreach($votings as $voting) {
+            $id = $voting->id;
             $isAbleToVote = $voting->isOpned() && empty($voting->vote);
             $state = $voting->isOpned() ? 'Открыто' : 'Закрыто';
             $votesYes = $voting->votes[VoteChoice::YES];
             $votesNo = $voting->votes[VoteChoice::NO];
             $votesPass = $voting->votes[VoteChoice::PASS];
             if ($forEdit || !$isAbleToVote) {
+                if ($forEdit) {
+                    echo '<a href="/nure_practice/views/votings/edit.php?id='.$id.'">';
+                }
                 echo '<div>';
                     echo "Тема: <b>{$voting->subject}</b><br>";
                     echo "Дата: <b>{$voting->created_date}</b><br>";
@@ -33,6 +37,9 @@
                         }
                     }
                 echo '</div><br><br><br>';
+                if ($forEdit) {
+                    echo '</a>';
+                }
             } else {
                 echo '<form action="/nure_practice/handlers/voting/vote.php" method="POST">';
                     echo "Тема: <b>{$voting->subject}</b><br>";
