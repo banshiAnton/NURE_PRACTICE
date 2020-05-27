@@ -10,7 +10,6 @@
     if ($user) {
         $user->loadEmails($db_connection);
         $_SESSION[SESSION_USER_ID_KEY] = $user->id;
-        $_SESSION[SESSION_USER_ROLE_KEY] = $user->role;
     }
 
     header('Location: ../../index.php');

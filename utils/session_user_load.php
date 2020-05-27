@@ -2,6 +2,8 @@
     require_once __DIR__.'/../config/constants.php';
     require_once __DIR__.'/../models/user.php';
 
+    session_cache_expire((int)SESSION_LIFE_TIME);
+
     session_start();
 
     $session_user = null;
