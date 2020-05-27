@@ -76,16 +76,31 @@
         }
 
         public static function authUserByLogin($db_connection, $login, $password) {
-            $sql = 'SELECT * FROM users WHERE login = :login AND password = :password';
-            $params = array(':login' => $login, ':password' => $password);
+            $sql = 'SELECT * FROM users WHERE login = :login';
+            $params = array(':login' => $login);
             $users = SQLExecutor::execute($db_connection,  $sql, $params);
             if (count($users) < 1) {
                 return false;
             }
-            return self::createFromSQLRow($users[0]);
+            $rawSqlUser = $users[0];
+            $user = self::createFromSQLRow($rawSqlUser);
+            $hashed_password = $rawSqlUser[UserTableFields::PASSWORD];
+            if (!self::validatePassword($hashed_password, $password)) {
+                return false;
+            }
+            return $user;
+        }
+
+        public static function validatePassword($hashed_password, $compared_password) {
+            return password_verify($compared_password, $hashed_password);
+        }
+
+        public static function encryptPassword($password) {
+            return password_hash($password, PASSWORD_DEFAULT);
         }
 
         public static function register($db_connection, $fields) {
+            $fields[':password'] = self::encryptPassword($fields[':password']);
             $sql = 'INSERT INTO users(full_name, role, login, password) VALUES (:full_name, :role, :login, :password)';
             $user_id = SQLExecutor::insert($db_connection, $sql, $fields);
             return $user_id;
