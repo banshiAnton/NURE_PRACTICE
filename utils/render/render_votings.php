@@ -12,7 +12,7 @@
             $votesPass = $voting->votes[VoteChoice::PASS];
             if ($forEdit || !$isAbleToVote) {
                 if ($forEdit) {
-                    echo '<a href="/nure_practice/views/votings/edit.php?id='.$id.'">';
+                    echo '<a class="disable" href="/nure_practice/views/votings/edit.php?id='.$id.'">';
                 }
                 echo '<div>';
                     echo "Тема: <b>{$voting->subject}</b><br>";

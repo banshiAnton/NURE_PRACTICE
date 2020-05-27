@@ -12,7 +12,7 @@
 
     class Voting {
 
-        const PAGE_LIMIT = 20;
+        const PAGE_LIMIT = 2;
 
         public $id;
         public $subject;
@@ -96,15 +96,15 @@
                 $sql = "SELECT votings.*, votes.*, COUNT(votes.voting_id) as votes_count, BIT_OR(:user_id = votes.user_id) as is_user_voted FROM votings LEFT JOIN votes ON votes.voting_id = votings.id WHERE votings.id IN ($in_concat) GROUP BY votings.id, votes.choice ORDER BY votings.created_date DESC";
             }
             $votingRowsJoined = SQLExecutor::execute($db_connection,  $sql, $params);
-            return self::proccessOnJoinVotinsAndVotes($votingRowsJoined, $user_id);
+            return self::proccessOnJoinVotinsAndVotes($votingRowsJoined);
         }
 
-        public static function proccessOnJoinVotinsAndVotes($votingRowsJoined, $user_id) {
+        public static function proccessOnJoinVotinsAndVotes($votingRowsJoined) {
             return array_reduce($votingRowsJoined, function ($votingsStore, $votingRow) {
                 $voting =  self::createFromSQLRow($votingRow);
                 $voteType = $votingRow[VoteTableFields::CHOICE];
                 $voteCount = (int)$votingRow['votes_count'];
-                $is_user_voted = empty($user_id) ? 0 : (int)$votingRow['is_user_voted'];
+                $is_user_voted = !array_key_exists('is_user_voted', $votingRow) ? 0 : (int)$votingRow['is_user_voted'];
                 if ($is_user_voted === 1) {
                     $voting->vote = Vote::createFromSQLRow($votingRow);
                 }
@@ -126,10 +126,10 @@
         }
 
         public static function countAll($db_connection) {
-            $sql = 'SELECT COUNT(*) as votings_count FROM votings';
+            $sql = 'SELECT COUNT(id) as votings_count FROM votings';
             $params = array();
             $result = SQLExecutor::execute($db_connection,  $sql, $params);
-            return (int)$result['votings_count'];
+            return (int)$result[0]['votings_count'];
         }
 
         public static function updateVotingById($db_connection, $voting_id, $params) {

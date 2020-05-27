@@ -18,7 +18,7 @@
             echo '<br><a href="/nure_practice/views/votings/list.php">Опросы</a>';
         }
         if ($session_user->isAbleToAdminVotings()) {
-            echo '<br><a href="/nure_practice/views/votings/editing.php">Управление опросам</a>';
+            echo '<br><a href="/nure_practice/views/votings/list.php?edit=1">Управление опросам</a>';
         }
     ?>
     <br><a href="/nure_practice/views/auth/logout.php">Выход</a>
