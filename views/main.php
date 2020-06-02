@@ -11,7 +11,7 @@
 </head>
 <body>
     <?php
-        echo "<div>{$session_user->full_name}</div>"
+        echo "<div>Пользователь: {$session_user->full_name}</div>"
     ?>
     <?php
         if ($session_user->isAdmin()) {
