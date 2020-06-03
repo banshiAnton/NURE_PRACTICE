@@ -20,8 +20,6 @@
 
         $db_connection = include_once(__DIR__.'/connection.php');
 
-        var_dump($_SESSION[SESSION_USER_ID_KEY]);
-
         if (!empty($_SESSION[SESSION_USER_ID_KEY])) {
             $session_user = User::getById($db_connection, (int)$_SESSION[SESSION_USER_ID_KEY]);
         }
