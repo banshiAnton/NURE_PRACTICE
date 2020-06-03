@@ -2,10 +2,6 @@
     require_once __DIR__.'/../config/constants.php';
     require_once __DIR__.'/../models/user.php';
 
-    session_cache_limiter('private');
-
-    session_cache_expire((int)SESSION_LIFE_TIME);
-
     session_start();
 
     $session_user = null;
@@ -23,6 +19,8 @@
         global $session_user;
 
         $db_connection = include_once(__DIR__.'/connection.php');
+
+        var_dump($_SESSION[SESSION_USER_ID_KEY]);
 
         if (!empty($_SESSION[SESSION_USER_ID_KEY])) {
             $session_user = User::getById($db_connection, (int)$_SESSION[SESSION_USER_ID_KEY]);
@@ -45,5 +43,11 @@
                 return;
             }
         }
+    }
+
+    function logOut() {
+        global $session_user;
+        $session_user = null;
+        unset($_SESSION[SESSION_USER_ID_KEY]);
     }
 ?>
