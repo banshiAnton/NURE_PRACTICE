@@ -29,7 +29,7 @@
                     if (!$forEdit) {
                         if(!empty($voting->vote)) {
                             $youeChoice = $voting->vote->choice;
-                            $youeChoiceText = $youeChoice == VoteChoice::YES ? 'За' : $youeChoice == VoteChoice::NO ? 'Против' : 'Воздержаться';
+                            $youeChoiceText = $youeChoice == VoteChoice::YES ? 'За' : ($youeChoice == VoteChoice::NO ? 'Против' : 'Воздержаться');
                             echo "Ваш выбор: <b>{$youeChoiceText}</b><br>";
                             echo "Дата выбора: <b>{$voting->vote->date}</b><br>";
                         } else {
